@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import restaurantModule from './data/restaurants.js';
+import { getRestaurants, getRestaurant, createRestaurant, deleteRestaurant } from './data/restaurants.js'; 
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;

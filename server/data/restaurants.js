@@ -50,7 +50,8 @@ let restaurantData = [
 ];
 export default { restaurantData };
 
-let lastId = restaurantData.length;
+//lastID becomes max ID in restaurantData array
+let lastId = Math.max(...restaurantData.map(r => r.id), 0);
 
 const getNextId = () => {
     lastId += 1;
@@ -59,19 +60,33 @@ const getNextId = () => {
 
 // Get a list of restaurants
 const getRestaurants = () => {
+    return restaurantData;
 };
 
 
 // Get a restaurant by id
 const getRestaurant = (id) => {
+    const restaurant = restaurantData.find((r) => r.id === id)
+    return restaurant || null;
 };
 
 // Create a new restaurant entry
 const createRestaurant = (newRestaurant) => {
+    const id = getNextId();
+    const restaurant = {id, ...newRestaurant};
+    restaurantData.push(restaurant);
+    return restaurant;
 };
 
 // Delete a restaurant by id
 const deleteRestaurant = (id) => {
+    const length = restaurantData.length;
+    restaurantData = restaurantData.filter((r) => r.id !== id)
+    if(restaurantData.length > length)
+    {
+        return true;
+    }
+    return false;
 };
 
-//export { getRestaurants, getRestaurant, createRestaurant, deleteRestaurant };
+export { getRestaurants, getRestaurant, createRestaurant, deleteRestaurant };
