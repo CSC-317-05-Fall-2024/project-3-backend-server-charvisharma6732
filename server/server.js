@@ -26,7 +26,22 @@ app.get('/attractions', (req, res) => {
 const {restaurantData} = restaurantModule;
 
 app.get('/restaurants', (req, res) => {
-    res.render('restaurants', {restaurants: restaurantData});
+    const restaurants = getRestaurants();
+    res.render('restaurants', {restaurants});
+});
+
+app.get('/restaurants/:id', (req, res) => {
+    const ID = parseInt(req.params.id);
+    const restuarant = getRestaurant(ID);
+
+    if(data)
+    {
+        res.render('restuarant-details', {restuarant});
+    }
+    else
+    {
+        res.status(404).send('No such restaurant exists');
+    }
 });
 
 app.get('/newRestaurant', (req, res) => {
