@@ -82,7 +82,7 @@ const createRestaurant = (newRestaurant) => {
 const deleteRestaurant = (id) => {
     const length = restaurantData.length;
     restaurantData = restaurantData.filter((r) => r.id !== id)
-    if(restaurantData.length > length)
+    if(restaurantData.length < length)
     {
         return true;
     }
