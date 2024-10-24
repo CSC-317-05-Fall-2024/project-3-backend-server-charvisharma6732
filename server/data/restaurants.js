@@ -51,9 +51,14 @@ let restaurantData = [
 export default { restaurantData };
 
 //lastID becomes max ID in restaurantData array
-let lastId = Math.max(...restaurantData.map(r => r.id), 0);
+let lastId = restaurantData.length > 0 ? Math.max(...restaurantData.map(r => r.id)) : -1; // Set lastId as the max ID in the array
+let deletedIDs = [];
 
 const getNextId = () => {
+    if(deletedIDs.length > 0)
+    {
+        return deletedIDs.pop();
+    }
     lastId += 1;
     return lastId;
 }
@@ -80,10 +85,11 @@ const createRestaurant = (newRestaurant) => {
 
 // Delete a restaurant by id
 const deleteRestaurant = (id) => {
-    const length = restaurantData.length;
-    restaurantData = restaurantData.filter((r) => r.id !== id)
-    if(restaurantData.length < length)
+    const index = restaurantData.findIndex((r) => r.id === id)
+    if(index !== -1)
     {
+        restaurantData.splice(index, 1);
+        deletedIDs.push(id);
         return true;
     }
     return false;
