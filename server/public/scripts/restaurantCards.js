@@ -2,14 +2,10 @@
     and js to attach it as a handler per card.
 */
 
-async function deleteRestaurantCard(event)
-{
-    const deleteButton = event.target;
-    const restaurantCard = deleteButton.closest('.restaurantItem');
-    const ID = restaurantCard.dataset.id;
+const deleteRestaurantCard = async (restaurantID) => {
 
     try{
-        const response = await fetch(`/api/restaurants/${ID}`, {
+        const response = await fetch(`/api/restaurants/${restaurantID}`, {
             method: 'DELETE',
         });
 
@@ -25,22 +21,20 @@ async function deleteRestaurantCard(event)
     {
         console.error('Error: ', error)
     }
+};
 
-    restaurantCard.remove();
-}
-
-async function fetchAndRenderRestaurants(){
+const fetchAndRenderRestaurants = async () => {
     try{
         const response = await fetch('/api/restaurants');
         const restaurants = await response.json();
     
-        const restaurantContainer = document.querySelector('.restaurantContainer');
+        const restaurantContainer = document.querySelector('.restaurants');
         restaurantContainer.innerHTML = '';
     
         restaurants.forEach(restaurant => {
             const restaurantCard = document.createElement('div');
             restaurantCard.classList.add('restaurantItem');
-            restaurantCard.dataset.id = restaurant.id;
+            restaurantCard.setAttribute('data-id', restaurant.id);
     
             restaurantCard.innerHTML = `
                 <img src="${restaurant.photo}" alt="${restaurant.name}">
@@ -51,26 +45,22 @@ async function fetchAndRenderRestaurants(){
                 </div>
                 <button class="deleteButton">X</button>
             `;
-    
+
+            const deleteButtons = restaurantCard.querySelector('.deleteButton')
+            deleteButtons.addEventListener('click', async () => {
+                const restaurantId = restaurantCard.getAttribute('data-id'); // Get the restaurant ID from the data-id attribute
+                await deleteRestaurantCard(restaurantId); // Call the delete function
+            });
+
             restaurantContainer.appendChild(restaurantCard);
-    
         });
-        deleteListeners();
     }
     catch(error)
     {
         console.error('Could not fetch restaurants: ', error)
     }
 
-}
+};
 
-
-function deleteListeners()
-{
-    const deleteButtons = document.querySelectorAll('.deleteButton')
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', deleteRestaurantCard)
-    });
-}
 
 document.addEventListener('DOMContentLoaded', fetchAndRenderRestaurants);
