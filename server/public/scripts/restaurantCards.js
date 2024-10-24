@@ -48,8 +48,8 @@ const fetchAndRenderRestaurants = async () => {
 
             const deleteButtons = restaurantCard.querySelector('.deleteButton')
             deleteButtons.addEventListener('click', async () => {
-                const restaurantId = restaurantCard.getAttribute('data-id'); // Get the restaurant ID from the data-id attribute
-                await deleteRestaurantCard(restaurantId); // Call the delete function
+                const restaurantId = restaurantCard.getAttribute('data-id'); 
+                await deleteRestaurantCard(restaurantId); 
             });
 
             restaurantContainer.appendChild(restaurantCard);
